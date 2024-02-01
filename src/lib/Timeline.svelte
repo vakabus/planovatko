@@ -1,0 +1,60 @@
+<script lang="ts">
+    import { type Model2 } from "../model";
+    import Day from "./Day.svelte";
+
+    export let model: Model2;
+
+    let width: number = 0;
+
+    let days: IterableIterator<number>;
+    let offsetX: number = -1;
+    let headerElement: HTMLElement | undefined;
+    $: maxDay = Math.ceil(
+        Math.max(...model.schedule.map((int) => int.end / (24 * 3600))),
+    );
+    $: days = Array(maxDay).keys();
+    $: console.log(days);
+    $: console.log(width);
+
+    function handle(ev: MouseEvent) {
+        if (headerElement == null) return;
+        offsetX = ev.pageX - headerElement.getBoundingClientRect().left;
+    }
+
+    function offsetToTime(offset: number): number {
+        return (offsetX * 24 * 3600) / (headerElement?.offsetWidth ?? 100);
+    }
+
+    function secondsToClock(seconds: number): string {
+        let hours = Math.floor(seconds / 3600);
+        let hoursStr = hours.toString().padStart(2, "0");
+        let minutes = Math.round((seconds % 3600) / 60);
+        let minutesStr = minutes.toString().padStart(2, "0");
+        if (hours < 0 || minutes < 0) return "_";
+        return `${hoursStr}:${minutesStr}`;
+    }
+</script>
+
+<div id="timeline" on:mousemove={handle} role="grid" tabindex="-1">
+    <div></div>
+    <div class="schedule-header" bind:this={headerElement}>
+        {secondsToClock(offsetToTime(offsetX))}
+    </div>
+    {#each days as day}
+        <Day {model} {day} />
+    {:else}
+        <div>Nope</div>
+        <div>No data for timeline</div>
+    {/each}
+</div>
+
+<style>
+    #timeline {
+        width: 100%;
+        /*height: fit-content;*/
+
+        display: grid;
+        grid-template: max-content / max-content 1fr;
+        grid-auto-columns: auto;
+    }
+</style>
