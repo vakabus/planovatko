@@ -10,26 +10,10 @@
     $: intervals = getScheduleForDay(model, day);
 </script>
 
-<div class="day-header">Day {day + 1}</div>
+<div>Day {day + 1}</div>
 
-<div class="day-timeline" bind:clientWidth={width} role="row">
+<div class="relative w-full h-full flex flex-row" bind:clientWidth={width} role="row">
     {#each intervals as interval}
         <Interval {interval} {pixelsPerSecond} />
     {/each}
 </div>
-
-<style>
-    .day-header {
-        min-width: 5em;
-    }
-
-    .day-timeline {
-        /* so that the position absolute intervals have a reference point */
-        position: relative;
-        widows: 100%;
-        height: 100%;
-
-        display: flex;
-        flex-direction: row;
-    }
-</style>

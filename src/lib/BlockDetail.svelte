@@ -12,13 +12,9 @@
     }
 </script>
 
-<style>
-
-</style>
-
-<div>
+<div class="flex-1">
     {#if block != null}
-        <h3>{block.title}</h3>
+        <h3 class="text-2xl mb-4">{block.title}</h3>
         <p></p>
     {:else}
         <p>No block selected</p>

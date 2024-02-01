@@ -18,7 +18,7 @@ Appka se snaží dosáhnout cílu napsaných níže. Cíle jsou zde napsány v p
 
 ## Technické provedení (WIP)
 
-* webová appka napsaná ve TypeScriptu + Svelte, všechno client-side, server maximálně tak na hostování dat
+* webová appka napsaná ve TypeScriptu + Svelte + Tailwind CSS, všechno client-side, server maximálně na hostování dat
 * jeden statický JSON je data model, appka ho akorát zobrazuje / edituje
 * \[možný nápad do budoucna\] použít Tailwind CSS?
 * \[možný nápad do budoucna\] implementace po vzoru TiddlyWiki jako quine, tj. appka vyexportuje html soubor, který obsahuje všechna data a appku samotnou

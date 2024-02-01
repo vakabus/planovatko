@@ -35,7 +35,7 @@
     }
 </script>
 
-<div id="timeline" on:mousemove={handle} role="grid" tabindex="-1">
+<div on:mousemove={handle} role="grid" tabindex="-1" class="grid grid-cols-[6em_1fr]">
     <div></div>
     <div class="schedule-header" bind:this={headerElement}>
         {secondsToClock(offsetToTime(offsetX))}
@@ -47,14 +47,3 @@
         <div>No data for timeline</div>
     {/each}
 </div>
-
-<style>
-    #timeline {
-        width: 100%;
-        /*height: fit-content;*/
-
-        display: grid;
-        grid-template: max-content / max-content 1fr;
-        grid-auto-columns: auto;
-    }
-</style>

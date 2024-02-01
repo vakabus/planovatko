@@ -17,20 +17,6 @@
     on:keypress={(ev) => $BLOCK_FOCUSED = interval.block}
     role="cell"
     tabindex="-1"
-    class="interval {$BLOCK_HIGHLIGHTED == interval.block ? 'highlighted' : ''}"
+    class="{$BLOCK_HIGHLIGHTED == interval.block ? 'bg-indigo-800' : 'bg-indigo-500'} absolute top-0 h-full"
     style="left: {pixelsPerSecond * interval.start}px; width: {pixelsPerSecond * (interval.end - interval.start)}px"
 ></div>
-
-<style>
-    .interval {
-        position: absolute;
-        top: 0;
-        height: 100%;
-
-        background-color: pink;
-    }
-
-    .highlighted {
-        background-color: red;
-    }
-</style>
