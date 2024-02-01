@@ -1,37 +1,5 @@
 import type {Model2} from "./model"
 
-export function loadTestData(): Model {
-    return {
-        rootBlock: "root",
-        blocks: {
-            "root": {
-                children: ["first", "second"],
-                title: "Root",
-                time: {
-                    startHour: 0,
-                    endHour: 10
-                }
-            },
-            "first": {
-                title: "First child",
-                children: [],
-                time: {
-                    startHour: 1,
-                    endHour: 2
-                }
-            },
-            "second": {
-                title: "Second child",
-                children: [],
-                time: {
-                    startHour: 3,
-                    endHour: 4
-                }
-            }
-        }
-    }
-}
-
 export function loadTestData2(): Model2 {
     return {
         title: "Souskurz",
@@ -68,4 +36,25 @@ export function loadTestData2(): Model2 {
             block: "rozcvicka"
         }]
     }
+}
+
+
+/* temporary solution for sharing the same test data between multiple devices */
+const url = "https://getpantry.cloud/apiv1/pantry/7cfa6df3-5056-4b53-a0a1-40e7cc526b3e/basket/newBasket65"
+
+export async function loadFromCloud(): Promise<Model2> {
+    let data = await fetch(url)
+    return await data.json()
+}
+
+export async function saveToCloud(model: Model2) {
+    console.log(JSON.stringify(model))
+    await fetch(url, {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: "POST",
+        body: JSON.stringify(model),
+        mode: "cors"
+    })
 }

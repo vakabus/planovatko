@@ -26,8 +26,8 @@
     }
 </script>
 
-<div class="flex-1">
-    <h3 class="text-2xl mb-4">Hierarchie</h3>
+<div class="flex-1 rounded-xl border-solid border-slate-200 border-2 p-4 min-w-80">
+    <h3 class="text-2xl mb-4 ">Hierarchie</h3>
     {#each hierarchy as layer}
         <p>
          {#each layer as block}

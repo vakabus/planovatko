@@ -21,6 +21,11 @@
         offsetX = ev.pageX - headerElement.getBoundingClientRect().left;
     }
 
+    function handleLeave(ev: MouseEvent) {
+        // make the time disappear
+        offsetX = -100
+    }
+
     function offsetToTime(offset: number): number {
         return (offsetX * 24 * 3600) / (headerElement?.offsetWidth ?? 100);
     }
@@ -35,11 +40,17 @@
     }
 </script>
 
-<div on:mousemove={handle} role="grid" tabindex="-1" class="grid grid-cols-[6em_1fr]">
-    <div></div>
-    <div class="schedule-header" bind:this={headerElement}>
+<div
+    on:mousemove={handle}
+    on:mouseleave={handleLeave}
+    role="grid"
+    tabindex="-1"
+    class="grid grid-cols-[6em_1fr] gap-2 p-4 rounded-xl border-solid border-slate-200 border-2"
+>
+    <div class="schedule-header">
         {secondsToClock(offsetToTime(offsetX))}
     </div>
+    <div bind:this={headerElement}></div>
     {#each days as day}
         <Day {model} {day} />
     {:else}
