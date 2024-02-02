@@ -22,6 +22,8 @@
                 newLayer = []
             }
             hierarchy = res
+        } else {
+            hierarchy = []
         }
     }
 </script>

@@ -5,6 +5,9 @@ export type Model2 = {
     }
     schedule: ScheduleInterval[]
     documents: {
+        /**
+         * The id is a human readable ID. Probably visible only in the editor.
+         */
         [id: string]: Document
     }
 }
@@ -18,17 +21,6 @@ export type ScheduleInterval = {
 export type Document = {
     type: "markdown" | "image" | "html"
     data: string
-}
-
-type TimeDef = {
-    startHour: number
-    durationHours: number
-} | {
-    endHour: number
-    durationHours: number
-} | {
-    startHour: number
-    endHour: number
 }
 
 export type Block = {
@@ -61,21 +53,47 @@ function resolveInheritance(block: Block, model: Model2): Block {
 
 function merge(b1: Block, b2: Block): Block {
     return {
-        time: b1.time ?? b2.time,
-        children: b1.children ?? b2.children,
+        extends: b1.extends ?? b2.extends,
         title: b1.title ?? b2.title
     }
 }
 
 
-const SECONDS_IN_A_DAY = 24 * 3600
-export function getScheduleForDay(model: Model2, day: number): ScheduleInterval[] {
+export const SECONDS_IN_A_DAY = 24 * 3600
+export function getScheduleForDay(model: Model2, day: number): [number, ScheduleInterval][] {
     let startTime = day * SECONDS_IN_A_DAY
     let endTime = (day + 1) * SECONDS_IN_A_DAY
 
-    return model.schedule.filter(p => p.end > startTime && p.start < endTime).map(p => ({
-        ...p,
-        start: Math.max(0, p.start - startTime),
-        end: Math.min(SECONDS_IN_A_DAY - 1, p.end - startTime),
-    }))
+    /* filter out intervals valid within a day */
+    let result: [number, ScheduleInterval][] = []
+    for (let entry of model.schedule.entries()) {
+        let int = entry[1]
+        if (int.end > startTime && int.start < endTime) {
+            result.push(entry)
+        }
+    }
+    return result
+}
+
+
+export function secondsToClock(seconds: number): string {
+    let days = Math.floor(seconds / SECONDS_IN_A_DAY)
+    seconds = seconds % SECONDS_IN_A_DAY
+    let hours = Math.floor(seconds / 3600);
+    let hoursStr = hours.toString().padStart(2, "0");
+    let minutes = Math.round((seconds % 3600) / 60);
+    let minutesStr = minutes.toString().padStart(2, "0");
+    if (hours < 0 || minutes < 0) return "_";
+    return `day ${days+1} @ ${hoursStr}:${minutesStr}`;
+}
+
+export function parseTime(time: string): number {
+    console.log(time)
+    let [day, clock] = time.split("@")
+    let ts = (Number.parseInt(day.trim().substring(4)) - 1) * SECONDS_IN_A_DAY
+
+    let [hours, minutes] = clock.split(":")
+    ts += Number.parseInt(hours.trim()) * 3600
+    ts += Number.parseInt(minutes.trim()) * 60
+    return ts
 }

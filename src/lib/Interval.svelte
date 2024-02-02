@@ -1,20 +1,35 @@
 <script lang="ts">
     import type { ScheduleInterval } from "../model";
-    import { BLOCK_FOCUSED, BLOCK_HIGHLIGHTED } from "./stores";
+    import { BLOCK_FOCUSED, BLOCK_HIGHLIGHTED, INTERVAL_FOCUSED } from "./stores";
 
+    export let index: number
     export let interval: ScheduleInterval;
     export let pixelsPerSecond: number;
 
     function mouseover(ev: MouseEvent) {
         $BLOCK_HIGHLIGHTED = interval.block;
     }
+
+    function highlight(_e: Event) {
+        $BLOCK_HIGHLIGHTED = interval.block
+    }
+
+    function stopHighlight(_e: Event) {
+        $BLOCK_HIGHLIGHTED = null
+    }
+
+    function focus(e: Event) {
+        $BLOCK_FOCUSED = interval.block
+        $INTERVAL_FOCUSED = index
+        e.stopPropagation()
+    }
 </script>
 
 <div
-    on:mouseenter={(ev) => ($BLOCK_HIGHLIGHTED = interval.block)}
-    on:mouseleave={(ev) => ($BLOCK_HIGHLIGHTED = null)}
-    on:click={(ev) => ($BLOCK_FOCUSED = interval.block)}
-    on:keypress={(ev) => ($BLOCK_FOCUSED = interval.block)}
+    on:mouseenter={highlight}
+    on:mouseleave={stopHighlight}
+    on:click={focus}
+    on:keypress={focus}
     role="cell"
     tabindex="-1"
     class="{$BLOCK_HIGHLIGHTED == interval.block
