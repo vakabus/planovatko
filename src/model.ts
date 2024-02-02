@@ -97,3 +97,16 @@ export function parseTime(time: string): number {
     ts += Number.parseInt(minutes.trim()) * 60
     return ts
 }
+
+export function getAllSuperblocks(model: Model2, me: string): Set<string> {
+    let res: Set<string> = new Set()
+    let worklist = [me]
+    while (worklist.length > 0) {
+        let current = worklist.pop()!
+        res.add(current)
+        for (let e of model.blocks[current].extends ?? []) {
+            worklist.push(e)
+        }
+    }
+    return res
+}

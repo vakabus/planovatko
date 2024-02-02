@@ -1,27 +1,44 @@
 <script lang="ts">
-    import type { ScheduleInterval } from "../model";
-    import { BLOCK_FOCUSED, BLOCK_HIGHLIGHTED, INTERVAL_FOCUSED } from "./stores";
+    import {
+        getAllSuperblocks,
+        type Model2,
+        type ScheduleInterval,
+    } from "../model";
+    import {
+        BLOCK_FOCUSED,
+        BLOCK_HIGHLIGHTED,
+        INTERVAL_FOCUSED,
+    } from "./stores";
 
-    export let index: number
+    export let index: number;
     export let interval: ScheduleInterval;
     export let pixelsPerSecond: number;
+    export let model: Model2;
+
+    let superblocks: Set<string>;
+    $: superblocks = getAllSuperblocks(model, interval.block);
 
     function mouseover(ev: MouseEvent) {
         $BLOCK_HIGHLIGHTED = interval.block;
     }
 
     function highlight(_e: Event) {
-        $BLOCK_HIGHLIGHTED = interval.block
+        $BLOCK_HIGHLIGHTED = interval.block;
     }
 
     function stopHighlight(_e: Event) {
-        $BLOCK_HIGHLIGHTED = null
+        $BLOCK_HIGHLIGHTED = null;
     }
 
     function focus(e: Event) {
-        $BLOCK_FOCUSED = interval.block
-        $INTERVAL_FOCUSED = index
-        e.stopPropagation()
+        $BLOCK_FOCUSED = interval.block;
+        $INTERVAL_FOCUSED = index;
+        e.stopPropagation();
+    }
+
+    function shouldWeHighlight(highligtedBlockId: string | null) {
+        if (highligtedBlockId == null) return false;
+        return superblocks.has(highligtedBlockId);
     }
 </script>
 
@@ -32,7 +49,7 @@
     on:keypress={focus}
     role="cell"
     tabindex="-1"
-    class="{$BLOCK_HIGHLIGHTED == interval.block
+    class="{shouldWeHighlight($BLOCK_HIGHLIGHTED)
         ? 'bg-indigo-800'
         : 'bg-indigo-500'} absolute top-0 h-full rounded"
     style="left: {pixelsPerSecond * interval.start}px; width: {pixelsPerSecond *

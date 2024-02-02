@@ -5,25 +5,13 @@
         type ScheduleInterval,
         parseTime,
     } from "../model";
-    import { INTERVAL_FOCUSED, MODEL } from "./stores";
-
-    export let model: Model2;
+    import { MODEL } from "./stores";
 
     let startEdit: HTMLInputElement;
     let endEdit: HTMLInputElement;
+    let blockSelect: HTMLSelectElement;
 
-    let interval: ScheduleInterval | null;
-    $: {
-        let focused = $INTERVAL_FOCUSED;
-        if (focused == null) {
-            interval = null;
-        } else {
-            interval = model.schedule[focused];
-        }
-    }
-
-    function change(e: Event) {
-        if ($INTERVAL_FOCUSED == null) return;
+    function add(e: Event) {
         try {
             var newStart = parseTime(startEdit.value);
             var newEnd = parseTime(endEdit.value);
@@ -32,11 +20,15 @@
             return;
         }
 
-        let focused = $INTERVAL_FOCUSED;
+        let interval: ScheduleInterval = {
+            block: blockSelect.value,
+            start: newStart,
+            end: newEnd,
+        };
+
         MODEL.update((model) => {
             if (model == null) return null;
-            model.schedule[focused].start = newStart;
-            model.schedule[focused].end = newEnd;
+            model.schedule.push(interval);
             return model;
         });
     }
@@ -45,12 +37,21 @@
 <div
     class="flex-1 rounded-xl border-solid border-slate-200 border-2 p-4 min-w-80 bg-gray-200"
 >
-    {#if interval == null}
-        <p>No interval selected</p>
+    {#if $MODEL == null}
+        <p>Wut?</p>
     {:else}
-        <h3 class="text-2xl mb-4">
-            Uprava intervalu `{interval.block}` na indexu {$INTERVAL_FOCUSED}
-        </h3>
+        <h3 class="text-2xl mb-4">Přidat interval</h3>
+        <div class="flex flex-row flex-wrap">
+            <div class="pe-2">Block:</div>
+            <select
+                class="block shadow border bg-white p-1 border-gray-700 rounded"
+                bind:this={blockSelect}
+            >
+                {#each Object.keys($MODEL.blocks) as key}
+                    <option>{key}</option>
+                {/each}
+            </select>
+        </div>
         <div class="mb-6 flex flex-row flex-wrap w-full items-center">
             <p class="pe-4">start at</p>
             <input
@@ -58,21 +59,21 @@
                 id="start"
                 type="text"
                 bind:this={startEdit}
-                value={secondsToClock(interval.start)}
+                value="day 1 @ 8:00"
             />
             <p class="px-4">until</p>
             <input
                 class="block shadow border border-gray-700 rounded p-1 leading-tight focus:outline-none focus:shadow-outline"
                 id="end"
                 type="text"
-                value={secondsToClock(interval.end)}
+                value="day 1 @ 9:00"
                 bind:this={endEdit}
             />
         </div>
         <button
-            on:click={change}
+            on:click={add}
             class="block ms-4 bg-amber-300 rounded p-1 px-2 hover:bg-amber-500"
-            >Změnit</button
+            >Přidat</button
         >
     {/if}
 </div>

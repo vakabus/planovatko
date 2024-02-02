@@ -1,6 +1,6 @@
 <script lang="ts">
     import { loadFromCloud, loadTestData2, saveToCloud } from "../loader";
-    import { MODEL } from "./stores";
+    import { MODEL, INTERVAL_FOCUSED } from "./stores";
 
     async function save(e: Event) {
         if ($MODEL == null) {
@@ -16,6 +16,21 @@
     }
     async function cloudData() {
         $MODEL = await loadFromCloud();
+    }
+
+    function deleteSelectedInterval() {
+        if ($INTERVAL_FOCUSED == null) {
+            alert("nic neni vybrano")
+            return
+        } else {
+            let focused = $INTERVAL_FOCUSED
+            MODEL.update((model) => {
+                if (model == null) return null;
+                let _ = model.schedule.splice(focused, 1)
+                return model
+            })
+            INTERVAL_FOCUSED.set(null)
+        }
     }
 </script>
 
@@ -34,5 +49,11 @@
         on:click={save}
         class="block bg-rose-300 hover:bg-rose-500 rounded shadow m-4 p-2 font-bold"
         >Save to cloud</button
+    >
+
+    <button
+        on:click={deleteSelectedInterval}
+        class="block bg-blue-300 hover:bg-blue-500 rounded shadow m-4 p-2 font-bold"
+        >Delete selected interval</button
     >
 </div>

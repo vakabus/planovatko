@@ -4,14 +4,43 @@ export function loadTestData2(): Model2 {
     return {
         title: "Souskurz",
         blocks: {
-            "sifrovacka": {
-                title: "Krutá šifrovacka"
+            "praktikalie": {
+                title: "Nějaké praktikálie"
             },
             "rozcvicka": {
-                title: "Rozcvička"
+                title: "Rozcvička",
+                extends: ["jidlo", "praktikalie"]
             },
             "hra": {
-                title: "Akční bullshit"
+                title: "Nějaká hra"
+            },
+            "sifrovacka": {
+                title: "Krutá šifrovacka",
+                extends: ["hra"]
+            },
+            "hra-krizove-situace": {
+                title: "Hra s tématem krizové situace",
+                extends: ["hra"]
+            },
+            "hra-zodpovednost": {
+                title: "Hra s tématem zodpovědnost",
+                extends: ["hra"],
+            },
+            "jidlo": {
+                title: "Jídlo",
+                extends: ["praktikalie"]
+            },
+            "vecere": {
+                title: "Večeře",
+                extends: ["jidlo"]
+            },
+            "obed": {
+                title: "Oběd",
+                extends: ["jidlo"]
+            },
+            "snidane": {
+                title: "Snídaně",
+                extends: ["jidlo"]
             }
         },
         documents: {},

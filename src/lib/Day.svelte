@@ -1,5 +1,10 @@
 <script lang="ts">
-    import { getScheduleForDay, SECONDS_IN_A_DAY, type Model2, type ScheduleInterval } from "../model";
+    import {
+        getScheduleForDay,
+        SECONDS_IN_A_DAY,
+        type Model2,
+        type ScheduleInterval,
+    } from "../model";
     import Interval from "./Interval.svelte";
 
     export let model: Model2;
@@ -10,15 +15,18 @@
     $: pixelsPerSecond = width / SECONDS_IN_A_DAY;
 
     /* get the relevant intervals capped just to this day */
-    let intervals: [number, ScheduleInterval][]
-    $: intervals = getScheduleForDay(model, day).map(([i, int]) => [
-        i,
-        {
-            ...int,
-            start: Math.max(0, int.start - startTime),
-            end: Math.min(SECONDS_IN_A_DAY - 1, int.end - startTime),
-        },
-    ]);
+    let intervals: [number, ScheduleInterval][];
+    $: {
+        intervals = getScheduleForDay(model, day).map(([i, int]) => [
+            i,
+            {
+                ...int,
+                start: Math.max(0, int.start - startTime),
+                end: Math.min(SECONDS_IN_A_DAY - 1, int.end - startTime),
+            },
+        ]);
+        console.log("day reload")
+    }
 </script>
 
 <div>Day {day + 1}</div>
@@ -33,6 +41,7 @@
             index={interval[0]}
             interval={interval[1]}
             {pixelsPerSecond}
+            {model}
         />
     {/each}
 </div>
