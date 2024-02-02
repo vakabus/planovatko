@@ -2,12 +2,12 @@
     import {
         getScheduleForDay,
         SECONDS_IN_A_DAY,
-        type Model2,
+        type Model,
         type ScheduleInterval,
     } from "../model";
     import Interval from "./Interval.svelte";
 
-    export let model: Model2;
+    export let model: Model;
     export let day: number;
     $: startTime = day * SECONDS_IN_A_DAY;
     let width: number = 0;

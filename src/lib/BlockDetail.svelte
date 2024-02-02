@@ -1,9 +1,9 @@
 <script lang="ts">
-    import type { Block, Model2 } from "../model";
+    import type { Block, Model } from "../model";
     import { getBlock } from "../model";
     import { BLOCK_FOCUSED } from "./stores";
 
-    export let model: Model2;
+    export let model: Model;
 
     let block: Block | null = null;
     $: {

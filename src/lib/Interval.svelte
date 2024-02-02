@@ -1,7 +1,7 @@
 <script lang="ts">
     import {
         getAllSuperblocks,
-        type Model2,
+        type Model,
         type ScheduleInterval,
     } from "../model";
     import {
@@ -13,7 +13,7 @@
     export let index: number;
     export let interval: ScheduleInterval;
     export let pixelsPerSecond: number;
-    export let model: Model2;
+    export let model: Model;
 
     let superblocks: Set<string>;
     $: superblocks = getAllSuperblocks(model, interval.block);

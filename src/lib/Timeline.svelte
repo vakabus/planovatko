@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { secondsToClock, type Model2, SECONDS_IN_A_DAY } from "../model";
+    import { secondsToClock, type Model, SECONDS_IN_A_DAY } from "../model";
     import Day from "./Day.svelte";
     import { BLOCK_FOCUSED, INTERVAL_FOCUSED } from "./stores";
 
-    export let model: Model2;
+    export let model: Model;
 
     let days: IterableIterator<number>;
     let offsetX: number = -1;

@@ -1,13 +1,13 @@
 <script lang="ts">
     import {
         secondsToClock,
-        type Model2,
+        type Model,
         type ScheduleInterval,
         parseTime,
     } from "../model";
     import { INTERVAL_FOCUSED, MODEL } from "./stores";
 
-    export let model: Model2;
+    export let model: Model;
 
     let startEdit: HTMLInputElement;
     let endEdit: HTMLInputElement;

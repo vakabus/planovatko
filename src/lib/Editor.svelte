@@ -1,10 +1,10 @@
 <script lang="ts">
-    import type { Model2 } from "../model";
+    import type { Model } from "../model";
     import BlockDetail from "./BlockDetail.svelte";
     import BlockHierarchy from "./BlockHierarchy.svelte";
     import Timeline from "./Timeline.svelte";
 
-    export let model: Model2
+    export let model: Model
 </script>
 
 <h1 class="text-4xl underline mb-6 mx-auto">{model.title}</h1>

@@ -1,7 +1,7 @@
 <script lang="ts">
     import {
         secondsToClock,
-        type Model2,
+        type Model,
         type ScheduleInterval,
         parseTime,
     } from "../model";

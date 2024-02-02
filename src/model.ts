@@ -1,4 +1,4 @@
-export type Model2 = {
+export type Model = {
     title: string
     blocks: {
         [name: string]: Block
@@ -28,13 +28,13 @@ export type Block = {
     extends?: string[]
 }
 
-export function getBlock(model: Model2, blockName: string): Block {
+export function getBlock(model: Model, blockName: string): Block {
     if (model.blocks[blockName] === undefined) alert(`block "${blockName}" is not defined but referenced`)
 
     return resolveInheritance(model.blocks[blockName], model)
 }
 
-function resolveInheritance(block: Block, model: Model2): Block {
+function resolveInheritance(block: Block, model: Model): Block {
     let result = block
     let resolutionQueue = [...(block.extends ?? [])]
 
@@ -60,7 +60,7 @@ function merge(b1: Block, b2: Block): Block {
 
 
 export const SECONDS_IN_A_DAY = 24 * 3600
-export function getScheduleForDay(model: Model2, day: number): [number, ScheduleInterval][] {
+export function getScheduleForDay(model: Model, day: number): [number, ScheduleInterval][] {
     let startTime = day * SECONDS_IN_A_DAY
     let endTime = (day + 1) * SECONDS_IN_A_DAY
 
@@ -98,7 +98,7 @@ export function parseTime(time: string): number {
     return ts
 }
 
-export function getAllSuperblocks(model: Model2, me: string): Set<string> {
+export function getAllSuperblocks(model: Model, me: string): Set<string> {
     let res: Set<string> = new Set()
     let worklist = [me]
     while (worklist.length > 0) {

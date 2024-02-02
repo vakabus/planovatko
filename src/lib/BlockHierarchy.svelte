@@ -1,15 +1,15 @@
 <script lang="ts">
-    import type { Block, Model2 } from "../model";
+    import type { Block, Model } from "../model";
     import { BLOCK_FOCUSED, BLOCK_HIGHLIGHTED } from "./stores";
     import { DataSet, Network } from "vis-network/standalone";
 
-    export let model: Model2;
+    export let model: Model;
     let container: HTMLElement;
     let width: number = 200;
     let height: number = 200;
     let network: Network | null = null;
 
-    function constructVisGraph(model: Model2): Network {
+    function constructVisGraph(model: Model): Network {
         // create an array with nodes
         let nodes = new DataSet(
             Object.entries(model.blocks).map(([id, obj]) => ({
@@ -54,13 +54,17 @@
         return new Network(container, data, options);
     }
 
-    function redraw(model: Model2) {
+    function redraw(model: Model) {
         if (container != null) {
+            if (network != null) {
+                network.destroy()
+            }
+
             network = constructVisGraph(model);
             network.on("hoverNode", (ev) => {
                 $BLOCK_HIGHLIGHTED = ev.node;
             });
-            network.on("blurNode", (ev) => {
+            network.on("blurNode", (_ev) => {
                 $BLOCK_HIGHLIGHTED = null;
             });
             network.on("click", (ev) => {
@@ -83,7 +87,7 @@
         class="absolute top-0 bottom-0 left-0 right-0"
         bind:this={container}
         on:resize={() => {
-            if (network != null) network.redraw();
+            redraw(model)
         }}
     ></div>
     <h3 class="text-2xl mb-4">Hierarchie</h3>

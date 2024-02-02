@@ -1,6 +1,6 @@
-import type {Model2} from "./model"
+import type {Model} from "./model"
 
-export function loadTestData2(): Model2 {
+export function loadTestData2(): Model {
     return {
         title: "Souskurz",
         blocks: {
@@ -71,12 +71,12 @@ export function loadTestData2(): Model2 {
 /* temporary solution for sharing the same test data between multiple devices */
 const url = "https://getpantry.cloud/apiv1/pantry/7cfa6df3-5056-4b53-a0a1-40e7cc526b3e/basket/newBasket65"
 
-export async function loadFromCloud(): Promise<Model2> {
+export async function loadFromCloud(): Promise<Model> {
     let data = await fetch(url)
     return await data.json()
 }
 
-export async function saveToCloud(model: Model2) {
+export async function saveToCloud(model: Model) {
     console.log(JSON.stringify(model))
     await fetch(url, {
         headers: {

@@ -1,5 +1,5 @@
 import { writable, type Writable } from "svelte/store"
-import type { Model2 } from "../model"
+import type { Model } from "../model"
 
 /**
  * The currently highlighted block id (highlighted = mouse hovers above it)
@@ -19,4 +19,4 @@ export const INTERVAL_FOCUSED: Writable<number | null> = writable(null)
 /**
  * This store is only for the purpose of hot-reloading, should not be used elsewhere than in the top level app
  */
-export const MODEL: Writable<Model2 | null> = writable(null)
+export const MODEL: Writable<Model | null> = writable(null)
